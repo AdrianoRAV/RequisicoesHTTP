@@ -9,6 +9,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite o Cep">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EditeTextCep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/buttonRecuperar"
         android:layout_width="wrap_content"
@@ -20,4 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Resultado" />
+
 </LinearLayout>

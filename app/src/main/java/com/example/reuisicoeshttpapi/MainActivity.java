@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button botaoRecuperar;
     private TextView textoResultado;
+    private TextInputEditText textInputEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +34,21 @@ public class MainActivity extends AppCompatActivity {
 
         botaoRecuperar = findViewById(R.id.buttonRecuperar);
         textoResultado = findViewById(R.id.textResultado);
+        textInputEditText = findViewById(R.id.EditeTextCep);
 
         botaoRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String cepEnd = textInputEditText.getText().toString();
+                Boolean camposValidados = validarCampos(cepEnd);
+
                 MyTask task = new MyTask();
                 String urlApi = "https://api.hgbrasil.com/finance";
-                String cep = "33115240";
-                String urlCep ="https://viacep.com.br/ws/"+ cep +"/json/";
+                if (camposValidados){
+                    String cep = "";
+                }
+              //  String cep = "33115240";
+                String urlCep ="https://viacep.com.br/ws/"+ cepEnd +"/json/";
                 task.execute(urlCep);
             }
         });
@@ -90,7 +103,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String resultado) {
             super.onPostExecute(resultado);
-            textoResultado.setText( resultado );
+
+            String logradouro = null;
+            String bairro = null;
+            String cep = null;
+
+            try {
+                JSONObject jsonObject = new JSONObject(resultado);
+                logradouro = jsonObject.getString("logradouro");
+                bairro = jsonObject.getString("bairro");
+                cep = jsonObject.getString("cep");
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            textoResultado.setText( logradouro + "\nBairro: " + bairro + "\nCep: " + cep );
         }
+    }
+    //public String validarCampos( String pAlcool, String pGasolina )
+    public Boolean validarCampos( String pCep ){
+        Boolean camposValidados = true;
+        //String campo = "preenchido";
+
+        if ( pCep == null || pCep.equals("")){
+            camposValidados = false;
+            // campo = "alcool";
+        }
+
+        return camposValidados;
+        //return campo;
     }
 }
