@@ -44,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
                 MyTask task = new MyTask();
                 String urlApi = "https://api.hgbrasil.com/finance";
-                if (camposValidados){
-                    String cep = "";
-                }
+
               //  String cep = "33115240";
                 String urlCep ="https://viacep.com.br/ws/"+ cepEnd +"/json/";
                 task.execute(urlCep);
